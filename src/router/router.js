@@ -3,6 +3,7 @@ import Home from "@/views/Home";
 import RoomList from "@/views/RoomList";
 import ApartmentList from "@/views/ApartmentList";
 import Admin from "@/views/Admin";
+import Room from "@/views/Room";
 
 const routes = [
     {
@@ -20,6 +21,13 @@ const routes = [
         name: 'RoomList',
         component: RoomList
     },
+
+    {
+        path: '/room/:id',
+        name: 'Room',
+        component: Room
+    },
+
 
     {
         path: '/apartments',

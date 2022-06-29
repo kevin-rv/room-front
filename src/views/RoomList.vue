@@ -10,7 +10,8 @@
 
 
       <button class="btn btn-success" @click="getAllRoom">Actualiser</button>
-      <button class="btn btn-info text-white m-3" disabled><i class="bi-eye"></i></button>
+      <router-link :to="{name: 'Room', params: { id: room.id }}" class="btn btn-info text-white mt-2 mb-2 border-dark me-1">Voir</router-link>
+      <button class="btn btn-info text-white m-3" @click="getOneRoom(room.id)"><i class="bi-eye"></i></button>
       <button class="btn btn-success " disabled>Réservé</button>
     </div>
   </div>
@@ -21,8 +22,6 @@ import Api from "@/api/Api";
 import {mapActions, mapGetters} from "vuex";
 export default {
   name: "RoomList",
-  data: () => ({
-  }),
   computed: {
     ...mapGetters({rooms: 'allRooms'}),
   },
@@ -36,6 +35,17 @@ export default {
             console.log(data)
          this.updateAllRoom(data)
             console.log(this.rooms)
+          })
+          .catch(message => {
+            console.log(message)
+          })
+    },
+
+    getOneRoom() {
+      let roomId = this.roomId
+      Api.getOneRoom(roomId)
+          .then(data => {
+            console.log(data)
           })
           .catch(message => {
             console.log(message)
