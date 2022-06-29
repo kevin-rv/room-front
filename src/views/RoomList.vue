@@ -1,13 +1,12 @@
 <template>
-  <div v-for="(room, index) in rooms" :key="index" class="card mb-3">
+  <div v-for="(room) in rooms" :key="room.id" class="card mb-3">
     <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1157&q=80" class="card-img-top" alt="chambre">
     <div class="card-body">
-      <h5 class="card-title">Chambre numéro :  {{room[index].number}}</h5>
-      <p class="card-text">{{rooms}}</p>
-      <p class="card-text">{{room[index].number}}</p>
-      <p class="card-text">{{room[index].area}}</p>
-      <p class="card-text">{{room[index].price}}</p>
-      <p class="card-text">{{room[index].image}}</p>
+      <h5 class="card-title">Chambre numéro :  {{room.number}}</h5>
+      <p class="card-text">{{room.number}}</p>
+      <p class="card-text">{{room.area}}</p>
+      <p class="card-text">{{room.price}}</p>
+      <p class="card-text">{{room.image}}</p>
 
 
       <button class="btn btn-success" @click="getAllRoom">Actualiser</button>
@@ -35,7 +34,7 @@ export default {
        Api.getAllRooms()
           .then(data => {
             console.log(data)
-            this.rooms.push(data)
+         this.updateAllRoom(data)
             console.log(this.rooms)
           })
           .catch(message => {

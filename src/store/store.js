@@ -5,7 +5,6 @@ export default createStore({
         api: Api,
         rooms: [],
         apartment: []
-
     },
     mutations: {
         UPDATE_ALL_APARTMENT(state, apartment){
@@ -16,14 +15,12 @@ export default createStore({
         }
     },
     actions: {
-        updateAllRooms(context) {
-            return Api
-                .getAllRooms()
-                .then((data) => {
-                    context.commit('UPDATE_ALL_ROOM', data)
-                    console.log(data)
-                })
+        updateAllApartment({commit}, apartment) {
+            commit('UPDATE_ALL_APARTMENT', apartment)
         },
+        updateAllRooms({commit}, room) {
+            commit('UPDATE_ALL_ROOM', room)
+        }
     },
     getters: {
         allApartment(state) {

@@ -12,6 +12,9 @@
             <router-link :to="{ path: '/' }"><a class="nav-link active" aria-current="page" href="#">Home</a></router-link>
           </li>
           <li class="nav-item">
+            <router-link :to="{ path: '/admin' }"><a class="nav-link" aria-current="page" href="#">Admin</a></router-link>
+          </li>
+          <li class="nav-item">
             <router-link :to="{ path: '/apartments' }"><a class="nav-link" href="#">Liste appartement</a></router-link>
           </li>
           <li class="nav-item">
