@@ -8,18 +8,6 @@ class Api
         this.axios = axios
         this.rootPath = rootPath
     }
-    // addRoom(apartmentId, data) {
-    //     return this.axios
-    //         .post(this.rootPath + '/apartment/{', {headers: {Authorization: 'Bearer ',
-    //                 'Content-Type': 'application/json',
-    //                 'Accept': 'application/json',
-    //             }})
-    //         .then(response => {
-    //             // respose = response.data
-    //             return   response.data
-    //             // console.log(response)
-    //         });
-    // }
 
     addApartment(data) {
         return this.axios
@@ -72,6 +60,19 @@ class Api
             });
     }
 
+    addRoom(apartmentId, data) {
+        return this.axios
+            .post(this.rootPath + '/apartment/' + apartmentId + '/addRoom', data, {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
     getAllRooms() {
         return this.axios
             .get(this.rootPath + '/rooms', {headers: {Authorization: 'Bearer ',
@@ -81,6 +82,45 @@ class Api
             .then(response => {
                // respose = response.data
               return   response.data
+                // console.log(response)
+            });
+    }
+
+    getAllRoomInApartment(apartmentId) {
+        return this.axios
+            .get(this.rootPath + '/apartment/' + apartmentId + '/rooms', {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
+    updateRoom(room) {
+        return this.axios
+            .patch(this.rootPath + '/editRoom/' + room.id, room, {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
+    deleteRoom(roomId) {
+        return this.axios
+            .delete(this.rootPath + '/deleteRoom/' + roomId.id , {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
                 // console.log(response)
             });
     }
