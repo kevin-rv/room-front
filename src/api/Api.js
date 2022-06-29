@@ -99,6 +99,19 @@ class Api
             });
     }
 
+    getOneRoom(roomId) {
+        return this.axios
+            .get(this.rootPath + '/room/' + roomId, {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
     updateRoom(room) {
         return this.axios
             .patch(this.rootPath + '/editRoom/' + room.id, room, {headers: {Authorization: 'Bearer ',

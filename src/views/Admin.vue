@@ -3,8 +3,11 @@
   <div class="card mb-3">
     <h5 class="card-header">Apartment</h5>
     <div class="card-body">
-      <button type="button" class="btn btn-info text-white mb-3" @click="this.openModalCreateApartment">
+      <button type="button" class="btn btn-info text-white mb-3 me-3" @click="this.openModalCreateApartment">
         créer un apartment
+      </button>
+      <button type="button" class="btn btn-info text-white mb-3" @click="this.getAllRooms">
+        afficher toute les chambre
       </button>
       <ul v-for="(apart) in apartment" :key="apart.id" class="list-group">
         <li class="list-group-item">Nom: {{apart.name}}
