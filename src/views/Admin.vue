@@ -10,25 +10,42 @@
         afficher toute les chambre
       </button>
       <ul v-for="(apart) in apartment" :key="apart.id" class="list-group">
-        <li class="list-group-item">Nom: {{apart.name}}
+        <li class="list-group-item">Nom: {{apart.name}} <br> Nombre de chambre: {{apart.rooms.length}}
           <button class="btn btn-outline-primary float-end" @click="this.openModalUpdateApartment(apart)">update</button>
           <button class="btn btn-outline-info float-end" @click="this.openModalGetRoomInApart(apart.id)">voir les chambre</button>
-          <button class="btn btn-outline-danger float-end" @click="this.openModalDeleteApartment(apart.id)">delete</button>
+          <button class="btn btn-outline-danger float-end" @click="this.openModalDeleteApartment(apart.id)"><i class="bi bi-trash"></i></button>
         </li>
       </ul>
     </div>
   </div>
 
-  <div class="card">
+  <div class="card mb-3">
     <h5 class="card-header">All Rooms</h5>
     <div class="card-body">
       <button type="button" class="btn btn-info text-white mb-3" @click="this.openModalCreateRoom">
         créer une rooms
       </button>
       <ul v-for="(room) in rooms" :key="room.id" class="list-group">
-        <li class="list-group-item">Numero de chambre : {{room.number}}
+        <li class="list-group-item">Nom de l'apartment: {{room.apartment.name}}<br> Numero de chambre : {{room.number}}
           <button class="btn btn-outline-primary float-end" @click="this.openModalUpdateRoom(room)">update</button>
-          <button class="btn btn-outline-danger float-end" @click="this.openModalDeleteRoom(room.id)">delete</button>
+          <button class="btn btn-outline-danger float-end" @click="this.openModalDeleteRoom(room.id)"><i class="bi bi-trash"></i></button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h5 class="card-header">All Reservation</h5>
+    <div class="card-body">
+      <button type="button" class="btn btn-info text-white mb-3" @click="this.openModalCreateReservation">
+        créer une reservation
+      </button>
+      <p>{{reservations}}</p>
+      <ul v-for="(reserve) in reservations" :key="reserve.id" class="list-group">
+
+        <li class="list-group-item">numero de chambre: {{reserve.room.number}} <br> value: {{reserve.value}}
+          <button class="btn btn-outline-primary float-end" @click="this.openModalUpdateReservation(reserve)">update</button>
+          <button class="btn btn-outline-danger float-end" @click="this.openModalDeleteReservation(reserve.id)"><i class="bi bi-trash"></i></button>
         </li>
       </ul>
     </div>
@@ -110,6 +127,33 @@
       </li>
     </ul>
   </modal>
+
+  <modal
+      :title="modalCreateUpdateReservationTitle"
+      ref="modalCreateUpdateReservation"
+      :action-func="modalCreateUpdateReservationAction"
+      action-text="Enregistrer"
+      button-action-class="btn-info text-white"
+  >
+    <div class="mb-3">
+      <label class="form-label">Rooms</label>
+      <select id="roomSelect" class="form-select" aria-label="Default select example">
+        <option selected>Open this select room menu</option>
+        <option v-for="(room) in rooms" :key="room.id" :value="room.id">{{room.number}}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Reservation Status</label>
+      <select id="reservationSelect" class="form-select" aria-label="Default select example">
+        <option selected>Open this reservation menu</option>
+        <option v-for="(reserve) in reservations" :key="reserve.id" :value="reserve.value">{{reserve.value}}</option>
+      </select>
+    </div>
+<!--    <div class="mb-3">-->
+<!--      <label class="form-label">Value</label>-->
+<!--      <input class="form-control" v-model="value" placeholder="value">-->
+<!--    </div>-->
+  </modal>
 </template>
 
 <script>
@@ -138,19 +182,25 @@ export default {
     modalCreateUpdateRoomTitle: '',
     modalCreateUpdateRoomAction: () => {},
     modalGetRoomInApartTitle: '',
-    modalGetRoomInApartAction: () => {},
+    reservationId: null,
+    value: '',
+    modalCreateUpdateReservationTitle: '',
+    modalCreateUpdateReservationAction: () => {},
 
   }),
   computed: {
-    ...mapGetters({apartment: 'allApartment',
-      rooms: 'allRooms'
+    ...mapGetters({
+      apartment: 'allApartment',
+      rooms: 'allRooms',
+      reservations: 'allReservation'
 
     }),
   },
   methods: {
     ...mapActions({
       updateAllApartment: 'updateAllApartment',
-      updateAllRooms: 'updateAllRooms'
+      updateAllRooms: 'updateAllRooms',
+      updateAllReservation: 'updateAllReservation'
     }),
     openModalCreateApartment() {
       this.name = ''
@@ -226,6 +276,36 @@ export default {
       let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalDelete.$el)
       modal.show()
     },
+
+    openModalCreateReservation() {
+      console.log(document.getElementById('roomSelect').value)
+      this.value = ''
+      this.modalCreateUpdateReservationTitle = 'Créer une Reservation'
+      this.modalCreateUpdateReservationAction = this.addReservation
+      let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalCreateUpdateReservation.$el)
+      modal.show()
+    },
+
+    openModalUpdateReservation(reservation) {
+      this.reservationId = reservation.id
+      this.value = reservation.value
+      console.log(reservation)
+      this.modalCreateUpdateReservationTitle = 'Update une reservation'
+      this.modalCreateUpdateReservationAction = this.updateReservation
+      let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalCreateUpdateReservation.$el)
+      modal.show()
+    },
+
+    openModalDeleteReservation(reservationId) {
+      console.log(reservationId)
+      this.reservationId = reservationId
+      this.modalDeleteTitle = 'Supprimer une reservation'
+      this.modalDeleteAction = this.deleteReservation
+      let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalDelete.$el)
+      modal.show()
+    },
+
+
     addApartment(){
       let data = {
         name: this.name,
@@ -377,11 +457,76 @@ export default {
             console.log(message)
           })
     },
+
+    getAllReservation() {
+      Api.getAllReservation()
+          .then(data => {
+            console.log(data)
+            this.updateAllReservation(data)
+          })
+          .catch(message => {
+            console.log(message)
+          })
+    },
+    addReservation(){
+      let roomId = document.getElementById('roomSelect').value
+      let value = {
+        value:document.getElementById('reservationSelect').value
+      }
+      console.log(value)
+      Api.addReservation(roomId, value)
+          .then(data => {
+            console.log(data)
+            let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalCreateUpdateReservation.$el)
+            modal.hide()
+            this.getAllReservation()
+          })
+          .catch(message => {
+            console.log(message)
+          })
+    },
+    updateReservation(){
+      // let apartmentId = document.getElementById('apartSelect').value
+      let reservation = {
+        id: this.reservationId,
+        value: this.value,
+      }
+      console.log(reservation)
+      Api.updateReservation(reservation)
+          .then(data => {
+            console.log(data)
+            let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalCreateUpdateReservation.$el)
+            modal.hide()
+            this.getAllReservation()
+          })
+          .catch(message => {
+            console.log(message)
+          })
+    },
+
+    deleteReservation(){
+      let reservationId = {
+        id: this.reservationId
+      }
+
+      Api.deleteReservation(reservationId)
+          .then(data => {
+            console.log(data)
+            let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalDelete.$el)
+            modal.hide()
+            this.getAllReservation()
+          })
+          .catch(message => {
+            console.log(message)
+          })
+    },
+
   },
 
   beforeMount() {
     this.getAllApartment()
     this.getAllRooms()
+    this.getAllReservation()
   }
 }
 </script>

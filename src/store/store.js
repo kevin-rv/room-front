@@ -4,7 +4,8 @@ export default createStore({
     state: {
         api: Api,
         rooms: [],
-        apartment: []
+        apartment: [],
+        reservation: []
     },
     mutations: {
         UPDATE_ALL_APARTMENT(state, apartment){
@@ -12,6 +13,9 @@ export default createStore({
         },
         UPDATE_ALL_ROOM(state, rooms){
             state.rooms = rooms
+        },
+        UPDATE_ALL_RESERVATION(state, reservation){
+            state.reservation = reservation
         }
     },
     actions: {
@@ -20,6 +24,9 @@ export default createStore({
         },
         updateAllRooms({commit}, room) {
             commit('UPDATE_ALL_ROOM', room)
+        },
+        updateAllReservation({commit}, reservation) {
+            commit('UPDATE_ALL_RESERVATION', reservation)
         }
     },
     getters: {
@@ -28,6 +35,9 @@ export default createStore({
         },
         allRooms(state) {
             return state.rooms
+        },
+        allReservation(state) {
+            return state.reservation
         },
 
     },

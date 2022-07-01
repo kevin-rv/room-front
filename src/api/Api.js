@@ -137,6 +137,63 @@ class Api
                 // console.log(response)
             });
     }
+
+    addReservation(roomId, value) {
+        return this.axios
+            .post(this.rootPath + '/room/' + roomId + '/addReservation', value, {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
+
+    getAllReservation() {
+        return this.axios
+            .get(this.rootPath + '/reservations', {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
+    updateReservation(reservation) {
+        return this.axios
+            .patch(this.rootPath + '/editReservation/' + reservation.id, reservation, {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
+    deleteReservation(reservationId) {
+        return this.axios
+            .delete(this.rootPath + '/deleteReservation/' + reservationId.id , {headers: {Authorization: 'Bearer ',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }})
+            .then(response => {
+                // respose = response.data
+                return   response.data
+                // console.log(response)
+            });
+    }
+
+
+
+
 }
 
 export default new Api(process.env.VUE_APP_ROOM_API_ROOT);

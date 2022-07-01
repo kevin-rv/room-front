@@ -8,11 +8,7 @@
       <p class="card-text">{{room.price}}</p>
       <p class="card-text">{{room.image}}</p>
 
-
-      <button class="btn btn-success" @click="getAllRoom">Actualiser</button>
-      <router-link :to="{name: 'Room', params: { id: room.id }}" class="btn btn-info text-white mt-2 mb-2 border-dark me-1">Voir</router-link>
-      <button class="btn btn-info text-white m-3" @click="getOneRoom(room.id)"><i class="bi-eye"></i></button>
-      <button class="btn btn-success " disabled>Réservé</button>
+      <router-link :to="{name: 'Room', params: { id: room.id }}" class="btn btn-info text-white mt-2 mb-2 me-1"><i class="bi-eye"></i></router-link>
     </div>
   </div>
 </template>
@@ -40,17 +36,6 @@ export default {
             console.log(message)
           })
     },
-
-    getOneRoom() {
-      let roomId = this.roomId
-      Api.getOneRoom(roomId)
-          .then(data => {
-            console.log(data)
-          })
-          .catch(message => {
-            console.log(message)
-          })
-    }
   },
 
   beforeMount() {

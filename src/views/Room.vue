@@ -8,7 +8,7 @@
       <p class="card-text text-danger">Price: {{rooms.price}}</p>
       <p class="card-text">image: {{rooms.image}}</p>
 
-      <button class="btn btn-success " disabled>Réservé</button>
+      <button class="btn btn-success " @click="addReservation">Réservé</button>
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@ import {mapActions, mapGetters} from "vuex";
 export default {
   name: "Room",
   data: () => ({
-
+  value: 'Reserver'
   }),
   computed: {
     ...mapGetters({rooms: 'allRooms'}),
@@ -39,8 +39,27 @@ export default {
           .catch(message => {
             console.log(message)
           })
-    }
+    },
+
+    addReservation(){
+      let value = {
+        value:this.value
+      }
+      console.log(value)
+      Api.addReservation(this.$route.params.id, value)
+          .then(data => {
+            console.log(data)
+            let modal = this.$bootstrap.Modal.getOrCreateInstance(this.$refs.modalCreateUpdateReservation.$el)
+            modal.hide()
+            this.getAllRooms()
+          })
+          .catch(message => {
+            console.log(message)
+          })
+    },
   },
+
+
 
   beforeMount() {
     this.getOneRoomInApart()
